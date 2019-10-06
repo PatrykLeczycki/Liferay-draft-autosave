@@ -49,11 +49,29 @@ window.saveDraft = function() {
 
     var formGroups = document.querySelectorAll('.form-builder-field .form-group');
 
+    ///////// TODO: delete inner groups from NodeList
+
+    for (var k = 0; k < formGroups.length; k++) {
+
+        var subSelectors = formGroups[k].querySelectorAll('.form-group');
+
+        // var formGroupsToArray = Array.from(formGroups);
+        // var subSelectorsToArray = Array.from(subSelectors);
+
+        for(var z = 0; z < formGroups.length; z++){
+            if(subSelectors.includes(formGroups[z])){
+                formGroups[z].remove();
+            }
+        }
+    }
+
     for (var i = 0; i < formGroups.length; i++){
-        var formGroupsChildren = formGroups[i];
-        console.log('formGroups[' + i + '] = ', formGroupsChildren);
-        for (var j = 0; j < formGroupsChildren.querySelectorAll('*').length; j++){
-            console.log('formGroupsChildren[' + j + '] = ', formGroupsChildren.querySelectorAll('*')[j]);
+        if(formGroups[i]){
+            var formGroupsChildren = formGroups[i];
+            console.log('formGroups[' + i + '] = ', formGroupsChildren);
+            for (var j = 0; j < formGroupsChildren.querySelectorAll('*').length; j++){
+                console.log('formGroupsChildren[' + j + '] = ', formGroupsChildren.querySelectorAll('*')[j]);
+            }
         }
     }
 

@@ -383,6 +383,8 @@ AUI.add(
                             initializer: function() {
                                 var instance = this;
 
+                                console.log('initializer fields = ', instance.get('fields'));
+
                                 instance.eventHandlers = [];
 
                                 instance.bindUI();
@@ -820,6 +822,8 @@ AUI.add(
                                     }
 
                                 }
+
+                                console.log('toJSON fields = ', instance.get('fields'));
 
                                 var fields = instance.get('fields');
 
@@ -3529,7 +3533,7 @@ AUI.add(
 
                                 // console.log('definition = ', definition);
 
-                                 console.log('get fields = ', instance.get('fields'));
+                                 //console.log('get fields = ', instance.get('fields'));
 
                                 var fieldValues = AArray.invoke(instance.get('fields'), 'toJSON');  //TODO: to jest potrzebne
 
@@ -3610,6 +3614,8 @@ AUI.add(
                                 var ddmFormValuesInput = instance.get('ddmFormValuesInput');
 
                                 // console.log('ddmFormValuesInput = ', ddmFormValuesInput);
+
+                                instance.get('fields');
 
                                 ddmFormValuesInput.val(JSON.stringify(instance.toJSON()));
 
@@ -3717,6 +3723,8 @@ AUI.add(
 
                                 var formNode = instance.get('formNode');
 
+
+
                                 if (event.form.attr('name') === formNode.attr('name')) {
                                     instance.updateDDMFormInputValue();
                                 }
@@ -3725,7 +3733,7 @@ AUI.add(
                             _onSubmitForm: function(event) {
                                 var instance = this;
 
-                                // console.log('_onSubmitForm state = ', this._state);
+                                console.log('_onSubmitForm get fields = ', instance.get('fields'))
 
                                 instance.finalizeRepeatableFieldLocalizations();
 

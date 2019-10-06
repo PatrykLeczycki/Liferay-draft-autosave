@@ -4,6 +4,8 @@ window.test = function() {
 
     var form = $('form#_com_liferay_journal_web_portlet_JournalPortlet_fm1');
 
+    console.log('compare form = ', form);
+
     var url = form.attr('action');
     var p_auth = new URLSearchParams(url).get('p_auth');
     //var language = form.find('#_com_liferay_journal_web_portlet_JournalPortlet_languageId').attr('value');
@@ -23,7 +25,6 @@ window.test = function() {
     //data.set('_com_liferay_journal_web_portlet_JournalPortlet_ddmFormValues', '{"availableLanguageIds":["' + language +'"],"defaultLanguageId":"' + language +'","fieldValues":[{"instanceId":"' + contentInputIdRandomPart + '","name":"content","value":{"' + language +'":"' + fixedContent + '"}}]}');
 
     //data.set('_com_liferay_journal_web_portlet_JournalPortlet_ddmFormValues', '{"availableLanguageIds":["en_US"],"defaultLanguageId":"en_US","fieldValues":[{"instanceId":"rxfe","name":"' + new Date() + '","value":{"en_US":"textbox___1"},"nestedFieldValues":[{"instanceId":"hxxd","name":"Booleange2a","value":{"en_US":"false"}}]},{"instanceId":"taim","name":"DocumentsAndMediaec4r","value":{"en_US":""}},{"instanceId":"zmwk","name":"Color8utg","value":{"en_US":"#FF0000"}}]}\n');
-
     //data.set('_com_liferay_journal_web_portlet_JournalPortlet_ddmFormValues', '    {"availableLanguageIds":["en_US"],"defaultLanguageId":"en_US","fieldValues":[{"instanceId":"rxfe","name":"TextBoxdb9s","value":{"en_US":"boolean = true"},"nestedFieldValues":[{"instanceId":"hxxd","name":"Booleange2a","value":{"en_US":"true"}}]},{"instanceId":"taim","name":"DocumentsAndMediaec4r","value":{"en_US":""}},{"instanceId":"zmwk","name":"Color8utg","value":{"en_US":"#FF0000"}}]}\n');
 
     url = url.replace('&p_auth='  + p_auth, '');
@@ -31,6 +32,8 @@ window.test = function() {
     var ddm = document.getElementById('_com_liferay_journal_web_portlet_JournalPortlet_ddmFormValues');
 
     //data.set('_com_liferay_journal_web_portlet_JournalPortlet_ddmFormValues', ddm);
+
+    console.log('data = ', data);
 
     console.log('test ddm = ', ddm);
 
@@ -47,31 +50,17 @@ window.test = function() {
     })
 };
 
-function getLast(div){
+function toJSON(){
 
-    var firstId = div.id;
+    var form = $('form#_com_liferay_journal_web_portlet_JournalPortlet_fm1');
 
-    var lastDiv = div;
+    //data.set('_com_liferay_journal_web_portlet_JournalPortlet_ddmFormValues', '{"availableLanguageIds":["' + language +'"],"defaultLanguageId":"' + language +'","fieldValues":[{"instanceId":"' + contentInputIdRandomPart + '","name":"content","value":{"' + language +'":"' + fixedContent + '"}}]}');
+    var ddm = '{"availableLanguageIds":"' + getAvailableLanguagesIds(form) +',"defaultLanguageId":"' + getDefaultLanguageId(form) + ',"fieldValues":}';
 
-    var innerDiv = lastDiv.getElementsByClassName('form-builder-field');
+    return ddm;
+}
 
-    var ddm = {"availableLanguageIds":["en_US"],"defaultLanguageId":"en_US","fieldValues":""};
-
-    while(innerDiv !== undefined){
-        lastDiv = innerDiv;
-        console.log('innerDiv !== undefined');
-
-    }
-
-    var currentFormBuilderDiv = $(lastDiv).closest('.form-builder-field');
-
-    do{
-
-    } while(currentFormBuilderDiv !== div);
-
-
-
-    //[{"instanceId":"rxfe","name":"TextBoxdb9s","value":{"en_US":"boolean = true"},"nestedFieldValues":[{"instanceId":"hxxd","name":"Booleange2a","value":{"en_US":"true"}}]},{"instanceId":"taim","name":"DocumentsAndMediaec4r","value":{"en_US":""}},{"instanceId":"zmwk","name":"Color8utg","value":{"en_US":"#FF0000"}}]
+function getFieldValues(){
 
 }
 
@@ -81,4 +70,36 @@ function getInstanceId(elem){
 
 function getName(elem){
     return elem.dataset.fieldname;
+}
+
+function getAvailableLanugagesIdsArray(form){
+    var titleMap = form.find("input[id^='_com_liferay_journal_web_portlet_JournalPortlet_titleMapAsXML_']");
+
+    var titleMapToArray = [];
+
+    Array.prototype.forEach.call(titleMap, entry => {
+        titleMapToArray.push(entry.id.slice(-5));
+    });
+
+    return titleMapToArray;
+}
+
+function getAvailableLanguagesIds(form){
+
+    var availableLanguagesIdsArray = getAvailableLanugagesIdsArray(form);
+
+    var titleMapToString = '[';
+
+    Array.prototype.forEach.call(availableLanguagesIdsArray, elem => {
+
+        titleMapToString += '"' + elem + '",';
+    });
+    titleMapToString = titleMapToString.slice(0, -1);
+    titleMapToString += ']';
+
+    return titleMapToString;
+}
+
+function getDefaultLanguageId(form){
+    return form.find('#_com_liferay_journal_web_portlet_JournalPortlet_languageId').attr('value');
 }
